@@ -1,8 +1,8 @@
 # Top Quark Classification using Deep Learning
 
-A deep learning solution for real-time classification of particle jets into **standard background** or **top quark candidates**, leveraging custom-designed convolutional neural networks (CNN) in **MATLAB**.
+A deep CNN based solution for real-time classification of particle jets into **standard background** or **top quark**, using custom convolutional blocks in **MATLAB Deep Network Designer**.
 
-## 🚀 Project Overview
+## Project Overview
 
 This project applies modern deep learning techniques to high-energy physics data to solve a real-world classification problem. The network processes **multi-channel jet images** (local features) along with **global event-level features** like:
 
@@ -13,12 +13,23 @@ This project applies modern deep learning techniques to high-energy physics data
 
 The goal is to enable fast, reliable filtering of collision data streams, potentially applicable to particle detectors like those at CERN.
 
-## 📊 Dataset
+## Dataset
 
-The dataset consists of **jet images** (37x37x12 tensors) and corresponding **global features**, pre-processed into MATLAB `.mat` files.
+Link to the dataset: [CERN's Zenodo Dataset](https://zenodo.org/records/2603256#.Y20xysvMLmE)  
+The dataset consists of particle data(Energy, Momentum_X, Momentum_Y, Momentum_z) for 200 constituents per Jet (if fewer were recorded, the remaining columns are 0 padded)
 
-To access the dataset:  
-[Click here to download the dataset](https://zenodo.org/records/2603256#.Y20xysvMLmE)  <!-- Replace with actual dataset link -->
+
+### To use the dataset:
+
+Use this code to extract data into parquet files and compress into gzip:
+
+```python
+import pandas as pd
+df = pd.read_hdf('train.h5', 'table').sample(n = 90000)   # Change the number of samples if required
+df.to_parquet('jets90000.parquet.gzip', compression = 'gzip') 
+
+```
+Use the generated file in `gen_dataset.m` and the images will be generated and saved for training, testing and validation.
 
 ## Network Architecture
 
