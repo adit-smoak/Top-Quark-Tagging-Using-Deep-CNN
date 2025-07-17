@@ -4,14 +4,9 @@ A deep CNN based solution for real-time classification of particle jets into **s
 
 ## Project Overview
 
-This project applies modern deep learning techniques to high-energy physics data to solve a real-world classification problem. The network processes **multi-channel jet images** (local features) along with **global event-level features** like:
+This project applies modern deep learning techniques to high-energy particle data to solve the classification problem. The network processes **multi-channel jet images**, which essentially represent various statisticaal metrics along with **global jet-level features** like: Energy Skewness, pT Skewness, Energy Kurtosis, pT Kurtosis. The multiple pixel-level channels are described in great detail in the `literature` folder.
 
-- **Energy Skewness**
-- **pT Skewness**
-- **Energy Kurtosis**
-- **pT Kurtosis**
-
-The goal is to enable fast, reliable filtering of collision data streams, potentially applicable to particle detectors like those at CERN.
+The goal is to enable fast, reliable filtering of collision data streams, potentially applicable to particle detectors like the LHC pr maybe the high luminosity at CERN .
 
 ## Dataset
 
@@ -32,10 +27,12 @@ df.to_parquet('jets90000.parquet.gzip', compression = 'gzip')
 Use the generated file in `gen_dataset.m` and the images will be generated and saved for training, testing and validation.
 
 ## Network Architecture
+The network utilizes **aggregated residual transformations** coupled with **Squeeze and Excite (SE)** Blocks. 
+Using Aggregated Residual transformations over the standard residual additions has been proven much effective due to the use of **grouped convolution** layers, where channels are divided into different convolution blocks and each block extracts featues better than one block extracting over all the channels. 
+Another issue observed in almost all Convolutional Networks is as the depth increases, usually the spatial dimensions of the image decreases and the number of channels increases. This calls the need for channel-level attention blocks, which calculate the "importance" of each channel in deciding the final output and assign weights to each channel.  
+The main block of the architecture is the 
+![MATLAB AI - Frame 1](https://github.com/user-attachments/assets/a1c00e79-5b14-4fb9-9662-a46f8dd4989e)
 
-- **Input 1:** Jet Images (processed via 2D CNN layers)
-- **Input 2:** 4 Global Features (processed via fully connected layers)
-- Fusion of both streams followed by classification.
 
 Built using **MATLAB's Deep Network Designer** for fast prototyping and visualization.
 
@@ -57,10 +54,16 @@ Built using **MATLAB's Deep Network Designer** for fast prototyping and visualiz
 - Achieved **89.85% validation accuracy** using 90k training samples.
 - Suitable for **real-time event filtering** in experimental setups.
 
-## 💻 Hardware Requirements
+## Hardware Requirements
 
 - **Minimum**: NVIDIA RTX 4060 Laptop GPU, 8 GB VRAM, 16 GB RAM.
 - Optimized for MATLAB 2024b or later.
 
-## 📂 Folder Structure
-
+## Folder Structure
+├── trainedModel90k.mat # Final trained network  
+├── checkpoints/ # Intermediate training checkpoints
+├── trainData60k.mat # Training dataset
+├── valData.mat # Validation dataset
+├── networkDesign.png # Model architecture diagram (optional)
+├── dlnet_train.m # Custom training script (if applicable)
+├── README.md # Project documentation
