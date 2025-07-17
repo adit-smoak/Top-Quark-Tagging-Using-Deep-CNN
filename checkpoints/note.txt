@@ -1,1 +1,12 @@
-This file contains all the checkpoints created while training the model on various datasets and with various hyperparameters
+This file contains the last 3 checkpoints created while training the model on training dataset with 90k jets.
+The hyperparameters are:
+
+Initial Learning Rate:	5e-3	
+Learning Rate Schedule:	"Piecewise, drop 0.3 every 3 epochs"	
+Max Epochs:	10	
+L2 Regularization:	1e-4	
+Mini-Batch Size:	64	
+Optimizer:	Adam
+Shuffle Data:	Every epoch	
+Validation Frequency:	Every 50 iterations	
+
