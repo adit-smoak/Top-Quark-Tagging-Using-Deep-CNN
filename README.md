@@ -54,10 +54,6 @@ Built using **MATLAB's Deep Network Designer** for fast prototyping and visualiz
 - Achieved **89.85% validation accuracy** using 90k training samples.
 - Suitable for **real-time event filtering** in experimental setups.
 
-## Hardware Requirements
-
-- **Minimum**: NVIDIA RTX 4060 Laptop GPU, 8 GB VRAM, 16 GB RAM.
-- Optimized for MATLAB 2024b or later.
 
 ## Folder Structure
 ├── trainedModel90k.mat # Final trained network  
