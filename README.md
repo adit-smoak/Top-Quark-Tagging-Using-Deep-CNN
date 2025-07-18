@@ -8,6 +8,8 @@ This project applies modern deep learning techniques to high-energy particle dat
 
 The goal is to enable fast and reliable filtering of collision data streams, potentially applicable to particle detectors like the LHC or the high-luminosity upgrade at CERN.
 
+[YouTube Video Link](https://youtu.be/JDQx7aJyvFw)
+
 ## Dataset
 
 Link to the dataset: [CERN's Zenodo Dataset](https://zenodo.org/records/2603256#.Y20xysvMLmE)  
@@ -109,6 +111,7 @@ Both these files can be found inside `deploy` folder
     ├── visualize_jet.m               # see individual jets  
 ├── literature  
     ├── description.md                # contains a link for the architecture of the model in Miro
+    ├── MATLAB AI Student Challenge Solution.pdf   # Contains the entire documentation about every steps taken and all plots for visualization
 ├── model
     ├── evaluate.m                    # run this to test your model
     ├── latest_lgraph.mlx             # script to generate a network in Deep Network Designer and analyze dimensions at every stage, run this before training
