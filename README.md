@@ -1,12 +1,12 @@
 # Top Quark Classification using Deep Learning
 
-A deep CNN based solution for real-time classification of particle jets into **standard background** or **top quark**, using custom convolutional blocks in **MATLAB Deep Network Designer**.
+A deep CNN-based solution for real-time classification of particle jets into **standard background** or **top quark**, using custom convolutional blocks in **MATLAB Deep Network Designer**.
 
 ## Project Overview
 
-This project applies modern deep learning techniques to high-energy particle data to solve the classification problem. The network processes **multi-channel jet images**, which essentially represent various statisticaal metrics along with **global jet-level features** like: Energy Skewness, pT Skewness, Energy Kurtosis, pT Kurtosis. The multiple pixel-level channels are described in great detail in the `literature` folder.
+This project applies modern deep learning techniques to high-energy particle data to solve the classification problem. The network processes **multi-channel jet images**, which essentially represent various statistical metrics along with **global jet-level features** like: Energy Skewness, pT Skewness, Energy Kurtosis, pT Kurtosis. The multiple pixel-level channels are described in great detail in the `literature` folder.
 
-The goal is to enable fast, reliable filtering of collision data streams, potentially applicable to particle detectors like the LHC pr maybe the high luminosity at CERN .
+The goal is to enable fast and reliable filtering of collision data streams, potentially applicable to particle detectors like the LHC or the high-luminosity upgrade at CERN.
 
 ## Dataset
 
@@ -16,7 +16,7 @@ The dataset consists of particle data(Energy, Momentum_X, Momentum_Y, Momentum_z
 
 ### To use the dataset:
 
-Use this code to extract data into parquet files and compress into gzip:
+Use this code to extract data into parquet files and compress them into gzip:
 
 ```python
 import pandas as pd
@@ -24,12 +24,17 @@ df = pd.read_hdf('train.h5', 'table').sample(n = 90000)   # Change the number of
 df.to_parquet('jets90000.parquet.gzip', compression = 'gzip') 
 
 ```
-Use the generated file in `gen_dataset.m` and the images will be generated and saved for training, testing and validation.
+Use the generated file in `gen_dataset.m` and the images will be generated and saved for training, testing, and validation.
 
 ## Network Architecture
-The network utilizes **aggregated residual transformations** coupled with **Squeeze and Excite (SE)** Blocks. 
-Using Aggregated Residual transformations over the standard residual additions has been proven much effective due to the use of **grouped convolution** layers, where channels are divided into different convolution blocks and each block extracts featues better than one block extracting over all the channels. 
-Another issue observed in almost all Convolutional Networks is as the depth increases, usually the spatial dimensions of the image decreases and the number of channels increases. This calls the need for channel-level attention blocks, which calculate the "importance" of each channel in deciding the final output and assign weights to each channel.  
+The network utilizes **aggregated residual transformations** coupled with **Squeeze and Excite (SE)** Blocks.  
+Using Aggregated Residual transformations over the standard residual additions has been proven to be more effective due to the use of **grouped convolution** layers, where channels are divided into different convolution blocks and each block extracts features better than one block extracting over all the channels.  
+Another issue observed in almost all Convolutional Networks is that as the depth increases, usually the spatial dimensions of the image decrease and the number of channels increase. This calls the need for channel-level attention blocks, which calculate the "importance" of each channel in deciding the final output and assign weights to each channel; hence, I used Squeeze-and-Excite blocks after major grouped convolution blocks to amplify important channels and reduce the impact of insignificant channels on the output.  
+
+  
+Link to the **complete** architecture of the network: [Architecture Flowchart on Miro](https://miro.com/app/board/uXjVJckxRRw=/?share_link_id=381620801824).  
+
+  
 The main block of the architecture is the 
 ![MATLAB AI - Frame 1](https://github.com/user-attachments/assets/a1c00e79-5b14-4fb9-9662-a46f8dd4989e)
 
@@ -40,12 +45,13 @@ Built using **MATLAB's Deep Network Designer** for fast prototyping and visualiz
 
 | Hyperparameter        | Value       | Reason                                         |
 |------------------------|------------|------------------------------------------------|
-| Initial Learn Rate     | 1e-2       | Enables faster initial convergence.            |
+| Initial Learn Rate     | 5e-3       | Reduces the risk of overshooting the optimal solution.            |
 | Learn Rate Schedule    | Piecewise  | Allows controlled learning rate decay.         |
-| Learn Rate Drop Period | 5 epochs   | Reduces LR after every 5 epochs.               |
+| Learn Rate Decay       | 0.3        | Multiplies learning rate by 0.3 at each decay step. |
+| Learn Rate Drop Period | 3 epochs   | Reduces LR after every 5 epochs.               |
 | L2 Regularization      | 1e-4       | Prevents overfitting by penalizing large weights. |
 | Batch Size             | 64         | Balanced between training speed and VRAM limits. |
-| Max Epochs             | 20         | Prevents overtraining; saturation after ~14 epochs. |
+| Max Epochs             | 10         | Prevents overtraining; overfitting after ~14 epochs. |
 | Optimizer              | Adam       | Efficient and adaptive learning optimization.  |
 
 ## Performance
@@ -60,7 +66,7 @@ Built using **MATLAB's Deep Network Designer** for fast prototyping and visualiz
 
 
   
-- Achieved **89.4% validation accuracy** using 60k training samples.
+- Achieved **89.4% validation accuracy** using 60k training samples (Epochs were increased to 20 and Learning rate to 1e-2 with 0.5 Decay factor and drop period after every 5 epochs).
 
   Training vs. Loss Curves
   <img width="1536" height="794" alt="acc_loss_89dot40_graaph" src="https://github.com/user-attachments/assets/88138f3e-494e-4a58-89e5-95afc6bda04b" />
