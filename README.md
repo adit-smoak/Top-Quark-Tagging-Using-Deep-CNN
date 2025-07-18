@@ -74,9 +74,21 @@ Built using **MATLAB's Deep Network Designer** for fast prototyping and visualiz
 
 
 - Suitable for **real-time event filtering** in experimental setups.
+
+## Deployment on FPGA
+Use the HDL Code Generation process when HDL source files are needed for synthesis, simulation, or integration into custom FPGA designs. Use the FPGA Deployment process when deploying and running the trained model directly on supported FPGA boards using MATLAB’s Deep Learning HDL Toolbox.  
+
+HDL code can be generated using `hdl_code_gen.m`  
+
+The model can be deployed on FPGA using `deploy_on_fpga.m`  
+
+Both these files can be found inside `deploy` folder
 ## Folder Structure 
 <pre>
 ├── checkpoints/                      # Last 3 training checkpoints  
+├── deploy/                           # Codes to generate HDL code and deploy on FPGA
+    ├── deploy_on_fpga.m              # Code to deploy on FPGA
+    ├── hdl_code_gen.m                # Code to generate the HDL code
 ├── image_generation                  # Contains files to generate images for training, validation, and testing  
     ├── align_img.m                   # function to rotate image for preprocessing  
     ├── gen_dataset.m                 # run this function with parquet files downloaded and in the same directory
