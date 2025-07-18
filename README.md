@@ -39,7 +39,7 @@ One of the block of the architecture is shown, which contains a residual network
 ![MATLAB AI - Frame 1](https://github.com/user-attachments/assets/a1c00e79-5b14-4fb9-9662-a46f8dd4989e)
 
 
-Built using **MATLAB's Deep Network Designer** for fast prototyping and visualization.
+The entire CNN is built using **MATLAB's Deep Network Designer** for fast prototyping and testing.
 
 ## Key Hyperparameters for training with 90k images
 
