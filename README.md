@@ -35,7 +35,7 @@ Another issue observed in almost all Convolutional Networks is that as the depth
 Link to the **complete** architecture of the network: [Architecture Flowchart on Miro](https://miro.com/app/board/uXjVJckxRRw=/?share_link_id=381620801824).  
 
   
-The main block of the architecture is the 
+One of the block of the architecture is shown, which contains a residual network connection, the Grouped Convolution Block, and the SE Block
 ![MATLAB AI - Frame 1](https://github.com/user-attachments/assets/a1c00e79-5b14-4fb9-9662-a46f8dd4989e)
 
 
