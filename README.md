@@ -50,16 +50,37 @@ Built using **MATLAB's Deep Network Designer** for fast prototyping and visualiz
 
 ## Performance
 
+- Achieved **90.33% testing accuracy** using 90k training samples.
+
+  Training vs. Loss Curves
+  <img width="1336" height="664" alt="acc_loss_90dot33_graph" src="https://github.com/user-attachments/assets/003b6bb8-1c7f-4c2d-8d5a-b83a8b03177f" />
+  <img width="1523" height="805" alt="image" src="https://github.com/user-attachments/assets/7a7a4714-0cfb-40da-b432-ea397e643f09" />
+  <img width="657" height="487" alt="confusion_matrix_90dot33_ac" src="https://github.com/user-attachments/assets/38147f02-f546-449f-a5de-405b74518548" />
+  <img width="657" height="492" alt="roc_90dot33_acc" src="https://github.com/user-attachments/assets/6b8939c5-5fd6-4914-aca4-5b2ad86d4e7b" />
+
+
+  
 - Achieved **89.4% validation accuracy** using 60k training samples.
-- Achieved **89.85% validation accuracy** using 90k training samples.
+
+  Training vs. Loss Curves
+  <img width="1536" height="794" alt="acc_loss_89dot40_graaph" src="https://github.com/user-attachments/assets/88138f3e-494e-4a58-89e5-95afc6bda04b" />
+  <img width="1915" height="914" alt="confusion_matrix_test_89dot4_acc" src="https://github.com/user-attachments/assets/10f0852a-2315-4764-8a08-1e3f8d65ac2a" />
+
+
 - Suitable for **real-time event filtering** in experimental setups.
-
-
-## Folder Structure
-├── trainedModel90k.mat # Final trained network  
-├── checkpoints/ # Intermediate training checkpoints
-├── trainData60k.mat # Training dataset
-├── valData.mat # Validation dataset
-├── networkDesign.png # Model architecture diagram (optional)
-├── dlnet_train.m # Custom training script (if applicable)
-├── README.md # Project documentation
+## Folder Structure 
+<pre>
+├── checkpoints/                      # Last 3 training checkpoints  
+├── image_generation                  # Contains files to generate images for training, validation, and testing  
+    ├── align_img.m                   # function to rotate image for preprocessing  
+    ├── gen_dataset.m                 # run this function with parquet files downloaded and in the same directory
+    ├── mapping_approach.m            # creates images using my logic of mapping coordinates and performs preprocessing
+    ├── visualize_averaged.m          # see how all the same kind of jets accumulated together would look like
+    ├── visualize_jet.m               # see individual jets  
+├── literature  
+    ├── description.md                # contains a link for the architecture of the model in Miro
+├── model
+    ├── evaluate.m                    # run this to test your model
+    ├── latest_lgraph.mlx             # script to generate a network in Deep Network Designer and analyze dimensions at every stage, run this before training
+    ├── train_network.mlx             # script to train the network and choose hyperparameters
+</pre>
