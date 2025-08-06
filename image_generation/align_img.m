@@ -10,9 +10,8 @@ function aligned_img = align_img(image, n, eta, phi, Xedges, Yedges)
         aligned_img = image;
         return
     end
-    % fprintf('row: %f\n', sec_row);
-    % fprintf('col: %f\n', sec_col);
-    val = image(sec_row, sec_col);
+
+    % val = image(sec_row, sec_col);
 
     dx = sec_col - cx;
     dy = -(sec_row - cy);
@@ -20,33 +19,13 @@ function aligned_img = align_img(image, n, eta, phi, Xedges, Yedges)
     theta = atan2(dy, dx);
     theta_deg = rad2deg(theta);
 
-    % angle_adjust = 0;
     if theta_deg > 45 && theta_deg <= 135
-        image_coarse = rot90(image, -1);  % 90° CW
-        % angle_adjust = -90;
+        aligned_img = rot90(image, -1);  % 90° CW
     elseif theta_deg > 135 || theta_deg <= -135
-        image_coarse = rot90(image, -2);  % 180° CW
-        % angle_adjust = -180;
+        aligned_img = rot90(image, -2);  % 180° CW
     elseif theta_deg > -135 && theta_deg <= -45
-        image_coarse = rot90(image, -3);  % 270° CW
-        % angle_adjust = -270;
+        aligned_img = rot90(image, -3);  % 270° CW
     else
-        image_coarse = image;
+        aligned_img = image;
     end
-
-    [row2_all, col2_all] = find(image_coarse == val);
-
-    % Use the first match only (just one pixel)
-    row2 = row2_all(1);
-    col2 = col2_all(1);
-
-    dx2 = col2 - ceil(size(image_coarse, 2)/2);
-    dy2 = -(row2 - ceil(size(image_coarse, 1)/2));
-    
-    theta2 = atan2(dy2, dx2);
-    fine_rotation = -rad2deg(theta2);
-    % fprintf('theta: %f\n', theta2);
-    % fprintf('fine: %f\n', fine_rotation);
-
-    aligned_img = imrotate(image_coarse, fine_rotation, 'nearest', 'crop');
 end
