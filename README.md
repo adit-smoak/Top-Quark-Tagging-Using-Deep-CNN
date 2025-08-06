@@ -53,14 +53,14 @@ The entire CNN is built using **MATLAB's Deep Network Designer** for fast protot
 | Learn Rate Drop Period | 4 epochs   | Reduces LR after every 4 epochs.               |
 | L2 Regularization      | 1e-4       | Prevents overfitting by penalizing large weights. |
 | Batch Size             | 64         | Balanced between training speed and VRAM limits. |
-| Max Epochs             | 12         | Prevents overtraining; overfitting after ~14 epochs. |
+| Max Epochs             | 12         | Prevents overfitting; overfitting after ~14 epochs. |
 | Optimizer              | Adam       | Efficient and adaptive learning optimization.  |
 
 ## Key Hyperparameters for training with 60k images
 
 | Hyperparameter        | Value       | Reason                                         |
 |------------------------|------------|------------------------------------------------|
-| Initial Learn Rate     | 1e-2       | Reduces the risk of overshooting the optimal solution.            |
+| Initial Learn Rate     | 1e-2       | Converges at an optimal rate.         |
 | Learn Rate Schedule    | Piecewise  | Allows controlled learning rate decay.         |
 | Learn Rate Decay       | 0.5        | Multiplies learning rate by 0.5 at each decay step. |
 | Learn Rate Drop Period | 5 epochs   | Reduces LR after every 5 epoch.               |
@@ -113,6 +113,7 @@ Both these files can be found inside `deploy` folder
 ├── literature  
     ├── description.md                # contains a link for the architecture of the model in Miro
     ├── MATLAB AI Student Challenge Solution.pdf   # Contains the entire documentation about every steps taken and all plots for visualization
+    ├── ytvideo.pptx                  # Contains the PPT slides I showed in the video
 ├── model
     ├── evaluate.m                    # run this to test your model
     ├── latest_lgraph.mlx             # script to generate a network in Deep Network Designer and analyze dimensions at every stage, run this before training
