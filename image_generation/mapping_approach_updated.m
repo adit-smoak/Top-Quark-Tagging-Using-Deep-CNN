@@ -147,29 +147,29 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
         angular_momentum_sum_channel(:, :, n) = align_img(angular_momentum_sum_channel(:, :, n), n, eta, phi, Xedges, Yedges); 
     
         fprintf('n: %f\n', n);
-        % ener_sum_top = sum(energy_sum_channel(1:18, :, n), 'all');
-        % ener_sum_bot = sum(energy_sum_channel(19:37, :, n), 'all');
-        % 
-        % if ener_sum_bot < ener_sum_top
-        %     flip_channels = {
-        %         'particle_count_channel',
-        %         'pT_sum_channel',
-        %         'pZ_sum_channel',
-        %         'energy_sum_channel',
-        %         'energy_variance_channel',
-        %         'pT_variance_channel',
-        %         'energy_skewness_pixel_channel',
-        %         'pT_skewness_pixel_channel',
-        %         'energy_kurtosis_pixel_channel',
-        %         'pT_kurtosis_pixel_channel',
-        %         'avg_energy_channel',
-        %         'angular_momentum_sum_channel'
-        %     };
-        % 
-        %     for k = 1:length(flip_channels)
-        %         eval([flip_channels{k} ' = flip(' flip_channels{k} ', 1);']);
-        %     end
-        % end
+        ener_sum_top = sum(energy_sum_channel(1:18, :, n), 'all');
+        ener_sum_bot = sum(energy_sum_channel(19:37, :, n), 'all');
+
+        if ener_sum_bot < ener_sum_top
+            flip_channels = {
+                'particle_count_channel',
+                'pT_sum_channel',
+                'pZ_sum_channel',
+                'energy_sum_channel',
+                'energy_variance_channel',
+                'pT_variance_channel',
+                'energy_skewness_pixel_channel',
+                'pT_skewness_pixel_channel',
+                'energy_kurtosis_pixel_channel',
+                'pT_kurtosis_pixel_channel',
+                'avg_energy_channel',
+                'angular_momentum_sum_channel'
+            };
+
+            for k = 1:length(flip_channels)
+                eval([flip_channels{k} ' = flip(' flip_channels{k} ', 1);']);
+            end
+        end
 
     end
     
