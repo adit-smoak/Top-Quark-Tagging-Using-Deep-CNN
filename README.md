@@ -50,10 +50,10 @@ The entire CNN is built using **MATLAB's Deep Network Designer** for fast protot
 | Initial Learn Rate     | 5e-3       | Reduces the risk of overshooting the optimal solution.            |
 | Learn Rate Schedule    | Piecewise  | Allows controlled learning rate decay.         |
 | Learn Rate Decay       | 0.3        | Multiplies learning rate by 0.3 at each decay step. |
-| Learn Rate Drop Period | 3 epochs   | Reduces LR after every 5 epochs.               |
+| Learn Rate Drop Period | 4 epochs   | Reduces LR after every 5 epochs.               |
 | L2 Regularization      | 1e-4       | Prevents overfitting by penalizing large weights. |
 | Batch Size             | 64         | Balanced between training speed and VRAM limits. |
-| Max Epochs             | 10         | Prevents overtraining; overfitting after ~14 epochs. |
+| Max Epochs             | 12         | Prevents overtraining; overfitting after ~14 epochs. |
 | Optimizer              | Adam       | Efficient and adaptive learning optimization.  |
 
 ## Key Hyperparameters for training with 60k images
