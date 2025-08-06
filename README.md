@@ -105,6 +105,7 @@ Both these files can be found inside `deploy` folder
     ├── hdl_code_gen.m                # Code to generate the HDL code
 ├── image_generation                  # Contains files to generate images for training, validation, and testing  
     ├── align_img.m                   # function to rotate image for preprocessing  
+    ├── calculate_radial_profile.m    # function to create a radial profile of energy/pT distribution of jet image
     ├── gen_dataset.m                 # run this function with parquet files downloaded and in the same directory
     ├── mapping_approach.m            # creates images using my logic of mapping coordinates and performs preprocessing
     ├── visualize_averaged.m          # see how all the same kind of jets accumulated together would look like
