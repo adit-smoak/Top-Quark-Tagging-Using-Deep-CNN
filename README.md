@@ -70,7 +70,7 @@ The entire CNN is built using **MATLAB's Deep Network Designer** for fast protot
 
 ## Performance
 
-- Achieved **90.87% testing accuracy** using 90k training samples.
+- Achieved **90.87% testing accuracy** and **90.33% validation accuracy** using 90k training samples.
 
   Training vs. Loss Curves
 <img width="1336" height="664" alt="best_res" src="https://github.com/user-attachments/assets/69a98fa2-5b34-4d27-ae11-994f368eb956" />
