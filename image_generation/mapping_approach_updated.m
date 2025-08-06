@@ -5,7 +5,7 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
     T_jets = movevars(T_jets, 'is_signal_new', 'Before', 'E_0');
     T_jets = removevars(T_jets, 'x__index_level_0__');
     
-    T_jets = sortrows(T_jets, 'is_signal_new');
+    T_jets = sortrows(T_jets, 'is_signal_new');              % all background jets are above the top jets
     % G = groupsummary(T_jets,'is_signal_new');
     
     Jet = T_jets_to_3d_tensor(T_jets);
@@ -20,27 +20,35 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
     
     size(Jet);
     
-    pT = sqrt(Jet(:, 2, :).^ 2 + Jet(:, 3, :).^ 2);
-    eta = squeeze(asinh(Jet(:, 4, :) ./ pT));
+    pT = sqrt(Jet(:, 2, :).^ 2 + Jet(:, 3, :).^ 2);         % transverse mom calculation
+    eta = squeeze(asinh(Jet(:, 4, :) ./ pT));               % pseudorapidity tensor
     size(eta);
-    phi = squeeze(atan2(Jet(:, 3, :), Jet(:, 2, :)));
+    phi = squeeze(atan2(Jet(:, 3, :), Jet(:, 2, :)));       % azimuthal tensor
     size(phi);
     
     pT = squeeze(pT);
     size(pT);
     
-    eta = eta - eta(1, :);
+    eta = eta - eta(1, :);                                % centering each jet acoording to the first constituent, this makes the first constituent fall on the center of the image
     phi = phi - phi(1, :);
     
     Nb = 37;
     Xedges = linspace(-1.6, 1.6, Nb + 1);
     Yedges = linspace(-1.6, 1.6, Nb + 1);
+
+    % This is the snippet for my mapping approach. For each jet, we map the coordinates where any constituent falls, to that constituent index in the 'Jet' array.
+    % This reduces the storage space required for creating the images in the later phase, as we do NOT map all coordinates in the 37 * 37 region to a value, 
+    % We map only the coordinates that actually have any constituent in them (such coordinates are very less, around 15 in 1369 (37 ^ 2)) 
     
     pixel_maps = cell(1, size(Jet, 3));
     
+    % this 'for' loop creates 'num_jets' amount of pixel maps, where each map contains all the indices with 1 or more particles as keys and
+    % the indices of constituents in an array as the value of that key.
+    
+    
     for n = 1: size(Jet, 3)
-        row_idx = discretize(eta(:, n), Xedges);
-        col_idx = discretize(phi(:, n), Yedges);
+        row_idx = discretize(eta(:, n), Xedges);                             % finds the row index of the constituents
+        col_idx = discretize(phi(:, n), Yedges);                             % finds the column index of the constituents
         pixel_map = containers.Map('KeyType', 'char', 'ValueType', 'any');
     
         for i = 1: 35 
@@ -48,9 +56,9 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
             c = col_idx(i);
             if ~isnan(r) && ~isnan(c)
                 key = sprintf('%d, %d', r, c);
-                if isKey(pixel_map, key)
+                if isKey(pixel_map, key)                                     % check if the key is mapped to any other constituent, create a list of all constituents in that pixel
                     pixel_map(key) = [pixel_map(key), i];
-                else
+                else                                                         % if not, map that coordinate to that constituent.
                     pixel_map(key) = i;
                 end
             end
@@ -61,18 +69,21 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
     num_jets = length(pixel_maps);
     
     % pixel wise channels
-    particle_count_channel = zeros(Nb, Nb, num_jets);
-    pT_sum_channel = zeros(Nb, Nb, num_jets);
-    pZ_sum_channel = zeros(Nb, Nb, num_jets);
-    energy_sum_channel = zeros(Nb, Nb, num_jets);
-    energy_variance_channel = zeros(Nb, Nb, num_jets);
-    pT_variance_channel = zeros(Nb, Nb, num_jets);
-    energy_skewness_pixel_channel = zeros(Nb, Nb, num_jets);
-    pT_skewness_pixel_channel = zeros(Nb, Nb, num_jets);
-    energy_kurtosis_pixel_channel = zeros(Nb, Nb, num_jets);
-    pT_kurtosis_pixel_channel = zeros(Nb, Nb, num_jets);
-    avg_energy_channel = zeros(Nb, Nb, num_jets);
-    angular_momentum_sum_channel = zeros(Nb, Nb, num_jets);
+    particle_count_channel = zeros(Nb, Nb, num_jets);                    % stores number of particles per pixel
+    pT_sum_channel = zeros(Nb, Nb, num_jets);                            % stores sum of transverse mom of all particles that fall into that coordinate, per coordinate/pixel
+    pz_sum_channel = zeros(Nb, Nb, num_jets);                            % stores sum of mom in z direction of all particles that fall into that coordinate, per coordinate/pixel
+    energy_sum_channel = zeros(Nb, Nb, num_jets);                        % stores sum of energy of all particles that fall into that coordinate, per coordinate/pixel
+    energy_variance_channel = zeros(Nb, Nb, num_jets);                   % in pixels with more than one constituent, it finds the variance in energy and stores them
+    pT_variance_channel = zeros(Nb, Nb, num_jets);                       % in pixels with more than one constituent, it finds the variance in pT and stores them
+    energy_skewness_pixel_channel = zeros(Nb, Nb, num_jets);             % in pixels with more than one constituent, it finds the skewness in energy and stores them
+    pT_skewness_pixel_channel = zeros(Nb, Nb, num_jets);                 % in pixels with more than one constituent, it finds the skewness in pT and stores them
+    energy_kurtosis_pixel_channel = zeros(Nb, Nb, num_jets);             % in pixels with more than one constituent, it finds the kurtosis in energy and stores them
+    pT_kurtosis_pixel_channel = zeros(Nb, Nb, num_jets);                 % in pixels with more than one constituent, it finds the kurtosis in pT and stores them
+    avg_energy_channel = zeros(Nb, Nb, num_jets);                        % stores average of energy of all particles that fall into that coordinate, per coordinate/pixel
+    angular_momentum_sum_channel = zeros(Nb, Nb, num_jets);              % stores the sum of angular momentum of 
+
+    % this 'for' loop calculates the values for each channel, like the sum of energy of all constituents in a pixel for energy_sum_channel, sum of pT of all
+    % constituents in a pixel for pT_sum_channel etc.
     
     for n = 1: num_jets
         map = pixel_maps{n};
@@ -131,7 +142,11 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
         end
     
     end
-        
+
+    % This is the preprocessing step where we check the second particle's location and rotate the image so that the second particle is in the angle range [-45°, 45°]
+    % then the image if flipped vertically if the sum of energy of the top part (row 1 to 18) is more than the sum of the bottom part (row 20 to 37). 
+    % The reason is described in the document in the literature folder.
+
     for n= 1: num_jets
         particle_count_channel(:, :, n) = align_img(particle_count_channel(:, :, n), n, eta, phi, Xedges, Yedges);
         pT_sum_channel(:, :, n) = align_img(pT_sum_channel(:, :, n), n, eta, phi, Xedges, Yedges); 
@@ -172,6 +187,8 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
         end
 
     end
+
+    % Perform z-score normalization across the 3rd dimension
     
     particle_count_channel = zscore(particle_count_channel,0,3);             
     pT_sum_channel = zscore(pT_sum_channel,0,3);  
@@ -207,7 +224,7 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
     input_features = zeros(1, 1, 4, num_jets);
 
     for n = 1: num_jets
-        energy_radial = calculate_radial_profile(energy_sum_channel(:, :, n));
+        energy_radial = calculate_radial_profile(energy_sum_channel(:, :, n));    % function to calculate the radial energy/pT distribution in the image
         input_features(1, 1, 1, n) = skewness(energy_radial);
         input_features(1, 1, 2, n) = kurtosis(energy_radial);
     
@@ -217,7 +234,8 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
     end
 
     data_norm = input_features; 
-    
+
+    % perform normalization of the features
     for feature = 1:4
         feature_values = squeeze(input_features(1,1,feature,:)); 
         mu = mean(feature_values);
@@ -237,44 +255,3 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function radial_array = calculate_radial_profile(image)
-    radial_array = zeros(1, 19);
-    center_row = 19;
-    center_col = 19;
-    
-    radial_array(1) = image(center_row, center_col);
-    
-    for ring = 1:18
-        ring_sum = 0;
-        
-        for row = 1:37
-            for col = 1:37
-                distance = max(abs(row - center_row), abs(col - center_col));
-                if distance == ring
-                    ring_sum = ring_sum + image(row, col);
-                end
-            end
-        end
-        
-        radial_array(ring + 1) = ring_sum;
-    end
-end
