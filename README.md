@@ -50,7 +50,7 @@ The entire CNN is built using **MATLAB's Deep Network Designer** for fast protot
 | Initial Learn Rate     | 5e-3       | Reduces the risk of overshooting the optimal solution.            |
 | Learn Rate Schedule    | Piecewise  | Allows controlled learning rate decay.         |
 | Learn Rate Decay       | 0.3        | Multiplies learning rate by 0.3 at each decay step. |
-| Learn Rate Drop Period | 4 epochs   | Reduces LR after every 5 epochs.               |
+| Learn Rate Drop Period | 4 epochs   | Reduces LR after every 4 epochs.               |
 | L2 Regularization      | 1e-4       | Prevents overfitting by penalizing large weights. |
 | Batch Size             | 64         | Balanced between training speed and VRAM limits. |
 | Max Epochs             | 12         | Prevents overtraining; overfitting after ~14 epochs. |
@@ -62,8 +62,8 @@ The entire CNN is built using **MATLAB's Deep Network Designer** for fast protot
 |------------------------|------------|------------------------------------------------|
 | Initial Learn Rate     | 1e-2       | Reduces the risk of overshooting the optimal solution.            |
 | Learn Rate Schedule    | Piecewise  | Allows controlled learning rate decay.         |
-| Learn Rate Decay       | 0.5        | Multiplies learning rate by 0.3 at each decay step. |
-| Learn Rate Drop Period | 5 epochs   | Reduces LR after every 5 epochs.               |
+| Learn Rate Decay       | 0.5        | Multiplies learning rate by 0.5 at each decay step. |
+| Learn Rate Drop Period | 5 epochs   | Reduces LR after every 5 epoch.               |
 | Batch Size             | 64         | Balanced between training speed and VRAM limits. |
 | Max Epochs             | 20         | Prevents overtraining; plateauing after ~17 epochs. |
 | Optimizer              | Adam       | Efficient and adaptive learning optimization.  |
@@ -99,6 +99,7 @@ Both these files can be found inside `deploy` folder
 ## Folder Structure 
 <pre>
 ├── checkpoints/                      # Last 3 training checkpoints  
+├── datasets/                         # Contains Google Drive link for ready-to-use datasets
 ├── deploy/                           # Codes to generate HDL code and deploy on FPGA
     ├── deploy_on_fpga.m              # Code to deploy on FPGA
     ├── hdl_code_gen.m                # Code to generate the HDL code
