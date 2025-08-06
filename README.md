@@ -70,13 +70,12 @@ The entire CNN is built using **MATLAB's Deep Network Designer** for fast protot
 
 ## Performance
 
-- Achieved **90.33% testing accuracy** using 90k training samples.
+- Achieved **90.87% testing accuracy** using 90k training samples.
 
   Training vs. Loss Curves
-  <img width="1336" height="664" alt="acc_loss_90dot33_graph" src="https://github.com/user-attachments/assets/003b6bb8-1c7f-4c2d-8d5a-b83a8b03177f" />
-  <img width="1523" height="805" alt="image" src="https://github.com/user-attachments/assets/7a7a4714-0cfb-40da-b432-ea397e643f09" />
-  <img width="657" height="487" alt="confusion_matrix_90dot33_ac" src="https://github.com/user-attachments/assets/38147f02-f546-449f-a5de-405b74518548" />
-  <img width="657" height="492" alt="roc_90dot33_acc" src="https://github.com/user-attachments/assets/6b8939c5-5fd6-4914-aca4-5b2ad86d4e7b" />
+<img width="1336" height="664" alt="best_res" src="https://github.com/user-attachments/assets/69a98fa2-5b34-4d27-ae11-994f368eb956" />
+<img width="720" height="477" alt="image" src="https://github.com/user-attachments/assets/757a8067-4a93-4a6f-9d6e-4637a6a0be75" />
+<img width="722" height="486" alt="image" src="https://github.com/user-attachments/assets/fcfce6da-407c-481a-825c-dbabde54161d" />
 
 
   
