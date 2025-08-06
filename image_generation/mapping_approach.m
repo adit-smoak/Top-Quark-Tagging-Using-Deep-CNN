@@ -257,3 +257,32 @@ function [input_image, input_features, input_labels] = mapping_approach(file_pat
     input_features = data_norm;
 end
 
+
+
+
+
+
+
+function radial_array = calculate_radial_profile(image)
+    radial_array = zeros(1, 19);
+    center_row = 19;
+    center_col = 19;
+    
+    radial_array(1) = image(center_row, center_col);
+    
+    for ring = 1:18
+        ring_sum = 0;
+        
+        for row = 1:37
+            for col = 1:37
+                distance = max(abs(row - center_row), abs(col - center_col));
+                if distance == ring
+                    ring_sum = ring_sum + image(row, col);
+                end
+            end
+        end
+        
+        radial_array(ring + 1) = ring_sum;
+    end
+end
+
